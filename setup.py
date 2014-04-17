@@ -18,7 +18,7 @@ setup(
     author="Oliver Gutiérrez",
     author_email="ogutsua@gmail.com",
     url = 'https://github.com/R3v1L/django-sitelog',
-    keywords = ['logging', 'sitelog', ],
+    keywords = ['django', 'logging', 'sitelog', ],
     classifiers = [],
     # download_url = '',
 )
