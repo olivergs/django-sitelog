@@ -63,7 +63,7 @@ class SiteLog(GenericNullModel):
         help_text=_('Tag for identifying this log message sender'))
     user=models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name=_('User'),blank=True,null=True,
         help_text=_('Associated user'))
-    ip=models.IPAddressField(_('IP address'),default='0.0.0.0',
+    ip=models.GenericIPAddressField(_('IP address'),default='0.0.0.0',
         help_text=_('Associated IP address'))
     message=models.CharField(_('Message'),max_length=200,
         help_text=_('Log message'))
