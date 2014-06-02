@@ -18,7 +18,8 @@ import traceback
 # Django imports
 from django.db import models
 from django.contrib.sites.models import Site
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
+
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import mail_admins as django_mail_admins
 from django.template.loader import render_to_string
@@ -102,12 +103,13 @@ class SiteLog(GenericNullModel):
                 data=traceback.format_exc()
 
         # Save log object
-        log=SiteLog(tag=tag,message=message,level=level,data=data,ip=ip,user=user,site=site)
+        log=SiteLog(tag=tag,message=u'%s' % message,level=level,data=u'%s' % data,ip=ip,user=user,site=site)
         log.content_object=content_object
         log.save()
         
         # Mail admins if specified or needed
         if mail_admins or log.level <= settings.SITELOG_MAIL_ADMINS_LEVEL:
+            print log
             body=render_to_string('sitelog/mail_admins.html', {'log': log})
             django_mail_admins(message,body,fail_silently=True)
 
