@@ -27,7 +27,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
-class SiteLog(GenericNullModel):
+class SiteLog(models.Model):
     """
     Web site log model
     """
