@@ -8,8 +8,5 @@ Website log application
     :synopsis: Website log application
 .. moduleauthor:: (C) 2013 Oliver Gutiérrez
 """
-# EVODjango imports
-from evodjango.tools import inject_app_defaults
 
-# Default application settings injection
-inject_app_defaults(__name__)
+SITELOG_MAIL_ADMINS_LEVEL = getattr(settings, 'SITELOG_MAIL_ADMINS_LEVEL', 0)
