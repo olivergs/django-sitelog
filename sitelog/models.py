@@ -24,10 +24,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.mail import mail_admins as django_mail_admins
 from django.template.loader import render_to_string
 from django.conf import settings
-
-# EVODjango imports
-from evodjango.models import GenericNullModel
-from evodjango.tools import get_public_ip
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 class SiteLog(GenericNullModel):
     """
@@ -70,6 +68,12 @@ class SiteLog(GenericNullModel):
         help_text=_('Log message'))
     data=models.TextField(_('Data'),blank=True,null=True,
         help_text=_('Extra data for log message'))
+    content_type = models.ForeignKey(ContentType,verbose_name=_('Content type'),blank=True,null=True,
+        help_text=_('Associated content type'))
+    object_id = models.PositiveIntegerField(_('Object ID'),blank=True,null=True,
+        help_text=_('Associated object identifier'))
+    content_object = GenericForeignKey('content_type', 'object_id')
+
 
     @staticmethod
     def log(tag,message,data=None,level=INFO,content_object=None,request=None,ip=None,user=None,site=None,mail_admins=False,callback=None):
@@ -79,7 +83,10 @@ class SiteLog(GenericNullModel):
         # Set IP value
         if ip is None:
             if not request is None:
-                ip=get_public_ip(request)
+                if 'HTTP_X_FORWARDED_FOR' in request.META:
+                    ip=request.META['HTTP_X_FORWARDED_FOR'].split(',')[0].strip()
+                else:
+                    ip=request.META['REMOTE_ADDR']
             else:
                 ip='0.0.0.0'
                 

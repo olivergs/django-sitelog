@@ -14,14 +14,12 @@ TODO: Action for exporting log to text files, CSV, etc.
 
 # Django imports
 from django.contrib import admin
-
-# EVODjango imports
-from evodjango.admin import BaseGenericTabularInline,BaseModelAdmin
+from django.contrib.contenttypes.admin import GenericTabularInline
 
 # Application imports
 from sitelog.models import SiteLog
 
-class SiteLogInline(BaseGenericTabularInline):
+class SiteLogInline(GenericTabularInline):
     """
     Site log inline administration class
     """
@@ -32,7 +30,7 @@ class SiteLogInline(BaseGenericTabularInline):
     def has_add_permission(self, request):
         return False
 
-class SiteLogAdmin(BaseModelAdmin):
+class SiteLogAdmin(admin.ModelAdmin):
     """
     Administration class
     """
