@@ -27,6 +27,9 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
+# Default settings
+SITELOG_MAIL_ADMINS_LEVEL = getattr(settings, 'SITELOG_MAIL_ADMINS_LEVEL', 0)
+
 class SiteLog(models.Model):
     """
     Web site log model
@@ -115,7 +118,7 @@ class SiteLog(models.Model):
         log.save()
         
         # Mail admins if specified or needed
-        if mail_admins or log.level <= settings.SITELOG_MAIL_ADMINS_LEVEL:
+        if mail_admins or log.level <= SITELOG_MAIL_ADMINS_LEVEL:
             print log
             body=render_to_string('sitelog/mail_admins.html', {'log': log})
             django_mail_admins(message,body,fail_silently=True)
